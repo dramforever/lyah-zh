@@ -1,5 +1,4 @@
-Learn You a Haskell in Chinese!
-=======
+# Learn You a Haskell in Chinese!
 
 翻译自[Learn You a Haskell for Great good][lyah]，原作者Miran Lipovaca
 
@@ -7,4 +6,3 @@ Learn You a Haskell in Chinese!
 
 [lyah]: http://learnyouahaskell.com
 [by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/3.0/
-
