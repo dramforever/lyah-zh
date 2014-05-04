@@ -1,17 +1,18 @@
-# 2.3 An intro to lists
+# 2.3 列表
 
-Much like shopping lists in the real world, lists in Haskell are very useful. It's the most used data structure and it can be used in a multitude of different ways to model and solve a whole bunch of problems. Lists are SO awesome. In this section we'll look at the basics of lists, strings (which are lists) and list comprehensions.
+就像购物列表一样，Haskell中列表非常游泳。它是最常用的数据结构，有许许多多不同的用途来建模和解决一大堆问题。列表特别有用，这里我们会看看列表、字符串（也是列表）和列表构造的一些基础知识。
 
-In Haskell, lists are a **homogenous** data structure. It stores several elements of the same type. That means that we can have a list of integers or a list of characters but we can't have a list that has a few integers and then a few characters. And now, a list!
-> Note: We can use the `let` keyword to define a name right in GHCI. Doing `let a = 1` inside GHCI is the equivalent of writing `a = 1` in a script and then loading it.
+Haskell里列表是一个**同质**的数据结构，也就是说列表里的元素必须是同一个类型的。这意味着我们可以写一列表的整数或一列表的字符，但是不能既有整数又有字符。我们先搞个列表出来
+
+> 注：我们可以在GHCi里面使用`let`关键字来直接定义一个名称。在GHCi里面写`let a = 1`和在一个程序里写`a = 1`并把它载入是一样的。
 
     ghci> let lostNumbers = [4,8,15,16,23,42]  
     ghci> lostNumbers  
     [4,8,15,16,23,42]  
 
-As you can see, lists are denoted by square brackets and the values in the lists are separated by commas. If we tried a list like `[1,2,'a',3,'b','c',4]`, Haskell would complain that characters (which are, by the way, denoted as a character between single quotes) are not numbers. Speaking of characters, strings are just lists of characters. `"hello"` is just syntactic sugar for `['h','e','l','l','o']`. Because strings are lists, we can use list functions on them, which is really handy.
+正如你见到的那样，列表是用方括号括起来的逗号分割的几个元素。如果我们写一个`[1,2,'a',3,'b','c',4]`，Haskell会表示字符（用单引号括起来表示）不是数。说到字符，`"hello"`其实就是`['h','e','l','l','o']`的简写。因为字符串是列表，我们也可以在字符串上方便地使用列表函数。
 
-A common task is putting two lists together. This is done by using the `++` operator.
+一个重要的列表操作是列表的连接。我们用`++`将两个列表连接。
 
     ghci> [1,2,3,4] ++ [9,10,11,12]  
     [1,2,3,4,9,10,11,12]  
@@ -20,29 +21,33 @@ A common task is putting two lists together. This is done by using the `++` oper
     ghci> ['w','o'] ++ ['o','t']  
     "woot"  
 
-Watch out when repeatedly using the `++` operator on long strings. When you put together two lists (even if you append a singleton list to a list, for instance: `[1,2,3] ++ [4]`), internally, Haskell has to walk through the whole list on the left side of `++`. That's not a problem when dealing with lists that aren't too big. But putting something at the end of a list that's fifty million entries long is going to take a while. However, putting something at the beginning of a list using the `:` operator (also called the cons operator) is instantaneous.
+注意以下重复使用`++`所产生的效果。当你把两个列表加起来的时候，（即使只是向一个列表里添加一个元素，比如是`[1,2,3] ++ [4]`）Haskell需要把`++`左边的列表完全走一遍。对于一个不太大的列表这可能不是问题，但你把一个东西加在一个五千万个元素的列表里可能会需要点时间！但是你可以使用`:`（也就是所谓的cons）来把一个元素加在一个列表前面。这个操作是非常快的。
 
     ghci> 'A':" SMALL CAT"  
     "A SMALL CAT"  
     ghci> 5:[1,2,3,4,5]  
     [5,1,2,3,4,5]  
 
-Notice how `:` takes a number and a list of numbers or a character and a list of characters, whereas `++` takes two lists. Even if you're adding an element to the end of a list with `++`, you have to surround it with square brackets so it becomes a list.
+（译者注：你可能已经发现了Haskell的列表其实就是链表。答对加十分！）
 
-`[1,2,3]` is actually just syntactic sugar for `1:2:3:[]`. `[]` is an empty list. If we prepend `3` to it, it becomes `[3]`. If we prepend `2` to that, it becomes `[2,3]`, and so on.
+仔细看看，`:`接受一个数和一列数或者一个字符和一列字符，而`++`接受两个列表。即使你只是用`++`向一个列表里加一个元素你也得用方括号括起来让它变成一个列表。
 
-> Note: `[]`, `[[]]` and`[[],[],[]]` are all different things. The first one is an empty list, the seconds one is a list that contains one empty list, the third one is a list that contains three empty lists.
+`[1,2,3]`其实只是`1:2:3:[]`的简写。`[]`是空列表。如果我们在它前面加上`3`它就变成`[3]`，再加个`2`就变成`[2,3]`，以此类推。
 
-If you want to get an element out of a list by index, use `!!`. The indices start at 0.
+> 注：`[]`、`[[]]`和`[[],[],[]]`是不同的。第一个是空列表，第二个是有一个空列表的列表，第三个是有三个空列表的列表。
+
+如果你想要使用位置偏移量（译者注：index叫啥来着？）来获取列表元素，请使用`!!`运算符。偏移从0开始。
 
     ghci> "Steve Buscemi" !! 6  
     'B'  
     ghci> [9.4,33.2,96.2,11.2,23.25] !! 1  
     33.2  
 
-But if you try to get the sixth element from a list that only has four elements, you'll get an error so be careful!
+但是如果你想取出只有4个元素的列表里的第6个元素会产生一个错误，所以还是小心为好。
 
-Lists can also contain lists. They can also contain lists that contain lists that contain lists …
+（译者注：取第k个元素是O(
+
+列表也能包含列表，也能包含包含列表的列表～～
 
     ghci> let b = [[1,2,3,4],[5,3,3,3],[1,2,2,3,4],[1,2,3]]  
     ghci> b  
