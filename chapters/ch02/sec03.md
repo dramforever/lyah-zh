@@ -1,4 +1,4 @@
-# 2.3 列表
+## 2.3 列表
 
 就像购物列表一样，Haskell中列表非常有用。它是最常用的数据结构，有许许多多不同的用途来建模和解决一大堆问题。列表特别有用，这里我们会看看列表、字符串（也是列表）和列表构造的一些基础知识。
 
@@ -45,7 +45,7 @@ Haskell里列表是一个**同质**的数据结构，也就是说列表里的元
 
 但是如果你想取出只有4个元素的列表里的第6个元素会产生一个错误，所以还是小心为好。
 
-（译者注：取第k个元素是O(k)不是O(1)）
+（译者注：取第k个元素是O(k)不是O(1)哦～～）
 
 列表也能包含列表，也能包含包含列表的列表～～
 
@@ -59,9 +59,9 @@ Haskell里列表是一个**同质**的数据结构，也就是说列表里的元
     ghci> b !! 2  
     [1,2,2,3,4]   
 
-The lists within a list can be of different lengths but they can't be of different types. Just like you can't have a list that has some characters and some numbers, you can't have a list that has some lists of characters and some lists of numbers.
+列表里的列表可以不一样长，但类型必须一样。就像你不能有一个既有字符又有数字的列表一样，你也不能有既有字符列表也有数字列表的列表。
 
-Lists can be compared if the stuff they contain can be compared. When using `<`, `<=`, `>` and `>=` to compare lists, they are compared in lexicographical order. First the heads are compared. If they are equal then the second elements are compared, etc.
+如果列表包含的内容可以被比较，则列表可以被比较。当使用`<`, `<=`, `>`和`>=`比较列表时使用字典顺序。首先比较第一个，如果相等就比较第二个，一直这样下去。
 
     ghci> [3,2,1] > [2,1,0]  
     True  
@@ -74,57 +74,57 @@ Lists can be compared if the stuff they contain can be compared. When using `<`,
     ghci> [3,4,2] == [3,4,2]  
     True  
 
-What else can you do with lists? Here are some basic functions that operate on lists.
+列表还能用来干吗？下面是一些常用的列表函数
 
-`head` takes a list and returns its head. The head of a list is basically its first element.
+`head`返回一个列表的第一个
 
     ghci> head [5,4,3,2,1]  
     5   
 
-`tail` takes a list and returns its tail. In other words, it chops off a list's head.
+`tail`返回一个列表去掉第一个
 
     ghci> tail [5,4,3,2,1]  
     [4,3,2,1]   
 
-`last` takes a list and returns its last element.
+`last`返回一个列表的最后一个
 
     ghci> last [5,4,3,2,1]  
     1   
 
-`init` takes a list and returns everything except its last element.
+`init`返回一个列表去掉最后一个
 
     ghci> init [5,4,3,2,1]  
     [5,4,3,2]   
 
-If we think of a list as a monster, here's what's what.
+下面这个图可能可以帮你理解这些东西
 
 ![list monster](http://drops.illumer.org/usr/uploads/2014/05/2004517552.png)
 
-But what happens if we try to get the head of an empty list?
+如果我们想要一个空列表的第一个会怎么样？
 
     ghci> head []  
     *** Exception: Prelude.head: empty list  
 
-Oh my! It all blows up in our face! If there's no monster, it doesn't have a head. When using `head`, `tail`, `last` and `init`, be careful not to use them on empty lists. This error cannot be caught at compile time so it's always good practice to take precautions against accidentally telling Haskell to give you some elements from an empty list.
+尼玛，报错了～～如果列表里啥都没有没有，它肯定没有第一个。在使用`head`, `tail`, `last`和`init`时要小心不要传入一个空列表。在编译时这个错误是看不出来的，所以你最好还是检查一下，不要让Haskell从空列表里取东西。
 
-`length` takes a list and returns its length, obviously.
+`length`返回一个列表的长度。这是显然的
 
     ghci> length [5,4,3,2,1]  
     5  
 
-`null` checks if a list is empty. If it is, it returns True, otherwise it returns False. Use this function instead of xs == [] (if you have a list called xs)
+`null`返回一个列表是否为空。它比`xs == []`快（假设你的列表叫`xs`）
 
     ghci> null [1,2,3]  
     False  
     ghci> null []  
     True  
 
-`reverse` reverses a list.
+`reverse`将一个列表反转
 
     ghci> reverse [5,4,3,2,1]  
     [1,2,3,4,5]  
 
-`take` takes number and a list. It extracts that many elements from the beginning of the list. Watch.
+`take`从一个列表开头截取一定量的元素
 
     ghci> take 3 [5,4,3,2,1]  
     [5,4,3]  
@@ -135,9 +135,9 @@ Oh my! It all blows up in our face! If there's no monster, it doesn't have a hea
     ghci> take 0 [6,6,6]  
     []  
 
-See how if we try to take more elements than there are in the list, it just returns the list. If we try to take 0 elements, we get an empty list.
+如果我们要的太多，`take`就会返回整个列表
 
-`drop` works in a similar way, only it drops the number of elements from the beginning of a list.
+`drop`很类似，它从一个列表开头切掉一定量的元素
 
     ghci> drop 3 [8,4,2,1,5,6]  
     [1,5,6]  
@@ -146,18 +146,18 @@ See how if we try to take more elements than there are in the list, it just retu
     ghci> drop 100 [1,2,3,4]  
     []   
 
-`maximum` takes a list of stuff that can be put in some kind of order and returns the biggest element.
+`maximum`返回一个包含可被比较元素的列表中最大的
 
-`minimum` returns the smallest.
+`minimum`返回最小的
 
     ghci> minimum [8,4,2,1,5,6]  
     1  
     ghci> maximum [1,9,2,3,4]  
     9   
 
-`sum` takes a list of numbers and returns their sum.
+`sum`返回一列表数的和
 
-`product` takes a list of numbers and returns their product.
+`product`返回一列表数的积
 
     ghci> sum [5,2,1,6,3,2,5,7]  
     31  
@@ -166,11 +166,11 @@ See how if we try to take more elements than there are in the list, it just retu
     ghci> product [1,2,5,6,7,9,2,0]  
     0   
 
-`elem` takes a thing and a list of things and tells us if that thing is an element of the list. It's usually called as an infix function because it's easier to read that way.
+`elem`返回一个元素是否在一个列表里。它一般以中缀形式调用，因为这样好看。
 
     ghci> 4 `elem` [3,4,5,6]  
     True  
     ghci> 10 `elem` [3,4,5,6]  
-    False  
-
-Those were a few basic functions that operate on lists. We'll take a look at more list functions later
+    False 
+ 
+还有一些列表函数，我们以后再讲
